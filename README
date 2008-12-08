@@ -1,0 +1,107 @@
+NAME
+       Net::fonolo - Perl interface to fonolo (http://fonolo.com/developer)
+
+VERSION
+       This document describes Net::fonolo version 1.0
+
+SYNOPSIS
+       #!/usr/bin/perl
+
+       use Net::fonolo;
+
+       my $fonolo = Net::fonolo->new(
+           key         => "< your fonolo developer API key >",
+           username    => "< a fonolo member username >",
+           password    => "< a fonolo member password >" );
+
+       my $result = $fonolo->search_companies("air canada");
+
+       ...
+
+DESCRIPTION
+       "new(...)"
+           You must supply a hash containing the configuration for the connection.
+
+           Valid configuration items are:
+
+           "key"
+               Your fonolo.com API developer key. You can get a developer key by signing up fro the fonolo developer
+               program from the accounts tab of your fonolo.com account. REQUIRED.
+
+           "username"
+               Username of the account at fonolo.com. This is usually your email address. REQUIRED.
+
+           "password"
+               Password of your account at fonolo. REQUIRED.
+
+           "useragent"
+               OPTIONAL: Sets the User Agent header in the HTTP request. If omitted, this will default to
+               "Net::fonolo/$Net::fonolo::VERSION"
+
+       "set_key($api_developer_key)"
+           Change the fonolo developer API key for sending API requests.
+
+       "set_auth($username, $password)"
+           Change the username/password for logging into fonolo.com. This is helpful when managing multiple accounts.
+
+       SYSTEM FUNCTIONS
+
+       "get_version()"
+           Return the current fonolo.com RPC server version
+
+       LOOKUP FUNCTIONS
+
+       "check_member()"
+           Validates the current username/password (set by the new() or set_auth() methods)
+
+       "check_member_number($phone_number)"
+           Validates that the given phone number belongs to the current username/password, and that it’s active. "Deep
+           Dial" requests can only be made to numbers that are currently configured on the given fonolo.com account.
+
+           This should be in the format: XXX-YYY-ZZZZ
+
+           This value can also be a SIP address in the format: sip:XXX@YYY
+
+       "search_companies($search_string)"
+           Perform a search against the fonolo.com database for the given search string, or company id.
+
+       "lookup_company($company_id)"
+           Lookup specific information about the given company id.
+
+       DEEP DIAL FUNCTIONS
+
+       "call_start($company_id, $phone_number)"
+           Start a "Deep Dial" request to the given company_id and phone_number. This phone_number must pass valida-
+           tion through the check_member_number() method.
+
+       "call_cancel($call_id)"
+           Cancel a call that was previously started by the call_start() method. The call_id is the call id returned
+           by the call_start() method.
+
+       "call_status($call_id)"
+           Return the current call status of the call referenced by the $call_id. The call_id is the call id returned
+           by the call_start() method.
+
+BUGS AND LIMITATIONS
+       No bugs have been reported.
+
+       Please report any bugs or feature requests to "bug-net-fonolo@rt.cpan.org", or through the web interface at
+       <http://rt.cpan.org>.
+
+AUTHOR
+       Mike Pultz <mike@fonolo.com>
+
+DISCLAIMER OF WARRANTY
+       BECAUSE THIS SOFTWARE IS LICENSED FREE OF CHARGE, THERE IS NO WARRANTY FOR THE SOFTWARE, TO THE EXTENT PERMIT-
+       TED BY APPLICABLE LAW. EXCEPT WHEN OTHERWISE STATED IN WRITING THE COPYRIGHT HOLDERS AND/OR OTHER PARTIES PRO-
+       VIDE THE SOFTWARE "AS IS" WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESSED OR IMPLIED, INCLUDING, BUT NOT LIMITED
+       TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE ENTIRE RISK AS TO THE
+       QUALITY AND PERFORMANCE OF THE SOFTWARE IS WITH YOU. SHOULD THE SOFTWARE PROVE DEFECTIVE, YOU ASSUME THE COST
+       OF ALL NECESSARY SERVICING, REPAIR, OR CORRECTION.
+
+       IN NO EVENT UNLESS REQUIRED BY APPLICABLE LAW OR AGREED TO IN WRITING WILL ANY COPYRIGHT HOLDER, OR ANY OTHER
+       PARTY WHO MAY MODIFY AND/OR REDISTRIBUTE THE SOFTWARE AS PERMITTED BY THE ABOVE LICENCE, BE LIABLE TO YOU FOR
+       DAMAGES, INCLUDING ANY GENERAL, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES ARISING OUT OF THE USE OR INABIL-
+       ITY TO USE THE SOFTWARE (INCLUDING BUT NOT LIMITED TO LOSS OF DATA OR DATA BEING RENDERED INACCURATE OR LOSSES
+       SUSTAINED BY YOU OR THIRD PARTIES OR A FAILURE OF THE SOFTWARE TO OPERATE WITH ANY OTHER SOFTWARE), EVEN IF
+       SUCH HOLDER OR OTHER PARTY HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
