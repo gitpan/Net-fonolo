@@ -1,3 +1,8 @@
 Revision History for Net::fonolo
+--------------------------------
+
+1.1	- 2008-12-09	(Mike) added some tests to be more complete; checks that a API server 
+			       version number is retruned from get_version();
+	- 2008-12-09	(Mike) fixed some errors on the man page section
 
 1.0	- 2008-12-06	(Mike) initial release

@@ -4,7 +4,7 @@
 # Written by Mike Pultz (mike@fonolo.com)
 #
 package Net::fonolo;
-$VERSION = "1.0";
+$VERSION = "1.1";
 
 use warnings;
 use strict;
@@ -242,7 +242,7 @@ Net::fonolo - Perl interface to fonolo (http://fonolo.com/developer)
 
 =head1 VERSION
 
-This document describes Net::fonolo version 1.0
+This document describes Net::fonolo version 1.1
 
 =head1 SYNOPSIS
 
@@ -360,6 +360,8 @@ returned by the call_start() method.
 
 Return the current call status of the call referenced by the $call_id. The call_id is the call id
 returned by the call_start() method.
+
+=back
 
 =head1 BUGS AND LIMITATIONS
 
