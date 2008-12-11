@@ -9,8 +9,10 @@ WriteMakefile(
 	ABSTRACT_FROM			=> 'lib/Net/fonolo.pm',
 	PL_FILES			=> {},
 	PREREQ_PM => {
-		'HTTP::Headers'		=> 0,
 		'JSON::RPC::Client'	=> 0,
+		'LWP::UserAgent'	=> 0,
+		'HTTP::Headers'		=> 0,
+		'Crypt::SSLeay'		=> 0,
 	},
 	dist				=> { COMPRESS => 'gzip -9f', SUFFIX => 'gz', },
 	clean				=> { FILES => 'Net-fonolo-*' },

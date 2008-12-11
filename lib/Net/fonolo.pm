@@ -4,7 +4,7 @@
 # Written by Mike Pultz (mike@fonolo.com)
 #
 package Net::fonolo;
-$VERSION = "1.1";
+$VERSION = "1.2";
 
 use warnings;
 use strict;
@@ -242,7 +242,7 @@ Net::fonolo - Perl interface to fonolo (http://fonolo.com/developer)
 
 =head1 VERSION
 
-This document describes Net::fonolo version 1.1
+This document describes Net::fonolo version 1.2
 
 =head1 SYNOPSIS
 

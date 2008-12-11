@@ -1,5 +1,7 @@
 Revision History for Net::fonolo
 --------------------------------
+1.2	- 2008-12-11	(Mike) fixed Makefile.PL to include the LWP::UserAgent and Crypt::SSLeay
+			       modules as dependencies.
 
 1.1	- 2008-12-09	(Mike) added some tests to be more complete; checks that a API server 
 			       version number is retruned from get_version();
