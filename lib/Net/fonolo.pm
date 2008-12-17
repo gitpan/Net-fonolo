@@ -4,7 +4,7 @@
 # Written by Mike Pultz (mike@fonolo.com)
 #
 package Net::fonolo;
-$VERSION = "1.2";
+$VERSION = "1.3";
 
 use warnings;
 use strict;
@@ -135,9 +135,24 @@ sub _send_request
 }
 
 #
+# deprecated (renamed) functions
+#
+sub lookup_company
+{
+	return company_details(@_);
+}
+sub list_companies
+{
+	return company_list(@_);
+}
+sub search_companies
+{
+	return company_search(@_);
+}
+
+#
 # API functions
 #
-
 sub get_version
 {
 	my ($_self) = @_;
@@ -177,23 +192,34 @@ sub check_member_number
 
 	return _send_request($_self, $obj);
 }
-sub search_companies
+sub company_search
 {
 	my ($_self, $_search) = @_;
 
 	my $obj = {
-		method => 'search_companies',
+		method => 'company_search',
 		params => [$_search]
 	};
 
 	return _send_request($_self, $obj);
 }
-sub lookup_company
+sub company_list
+{
+	my ($_self, $_limit, $_page, $_date_since) = @_;
+
+	my $obj = {
+		method => 'company_list',
+		params => [$_limit, $_page, $_date_since]
+	};
+
+	return _send_request($_self, $obj);
+}
+sub company_details
 {
 	my ($_self, $_company) = @_;
 
 	my $obj = {
-		method => 'lookup_company',
+		method => 'company_details',
 		params => [$_company]
 	};
 
@@ -242,7 +268,7 @@ Net::fonolo - Perl interface to fonolo (http://fonolo.com/developer)
 
 =head1 VERSION
 
-This document describes Net::fonolo version 1.2
+This document describes Net::fonolo version 1.3
 
 =head1 SYNOPSIS
 
@@ -251,6 +277,7 @@ This document describes Net::fonolo version 1.2
 use Net::fonolo;
 
 my $fonolo = Net::fonolo->new(
+
     key         => "< your fonolo developer API key >",
     username    => "< a fonolo member username >",
     password    => "< a fonolo member password >"
@@ -264,7 +291,7 @@ my $result = $fonolo->search_companies("air canada");
 
 =over
 
-=item C<new(...)>
+=item new(...)
 
 You must supply a hash containing the configuration for the connection.
 
@@ -293,14 +320,20 @@ OPTIONAL: Sets the User Agent header in the HTTP request. If omitted, this will 
 
 =back
 
-=item C<set_key($api_developer_key)>
+=item set_key($api_developer_key
 
 Change the fonolo developer API key for sending API requests.
 
-=item C<set_auth($username, $password)>
+$api_developer_key is the 32 byte API key, listed on the projects page for your application.
+
+=item set_auth($username, $password
 
 Change the username/password for logging into fonolo.com. This is helpful when managing multiple
 accounts.
+
+$username is the fonolo.com username (e-mail address) of the client account.
+
+$password is the plain-text password or the client account.
 
 =back
 
@@ -308,37 +341,68 @@ accounts.
 
 =over
 
-=item C<get_version()>
+=item get_version
 
 Return the current fonolo.com RPC server version
 
 =back
 
-=head2 LOOKUP FUNCTIONS
+=head2 MEMBER FUNCTIONS
 
 =over
 
-=item C<check_member()>
+=item check_member
 
-Validates the current username/password (set by the new() or set_auth() methods)
+Validates the current username/password, set by the new or set_auth methods.
 
-=item C<check_member_number($phone_number)>
+=item check_member_number($phone_number)
 
 Validates that the given phone number belongs to the current username/password, and that it's
 active. "Deep Dial" requests can only be made to numbers that are currently configured on the
 given fonolo.com account.
 
-This should be in the format: XXX-YYY-ZZZZ
+$phone_number is the phone number to validated, formatted as XXX-YYY-ZZZZ. This value can also be 
+a SIP address in the format: sip:XXX@YYY
 
-This value can also be a SIP address in the format: sip:XXX@YYY
+=back
 
-=item C<search_companies($search_string)>
+=head2 COMPANY FUNCTIONS
 
-Perform a search against the fonolo.com database for the given search string, or company id.
+=over
 
-=item C<lookup_company($company_id)>
+=item company_search($search_string)
+
+Perform a search against the fonolo.com database for the given search string.
+
+$search_string can be either a free-form keyword to search, or a company phone number, formated
+as XXX-YYY-ZZZZ.
+
+=item company_list
+
+=item company_list($limit)
+
+=item company_list($limit, $page)
+
+=item company_list($limit, $page, $date_since)
+
+Returns a list of all the companies in the fonolo.com database. 
+
+$limit is how many results to return per page; this defaults to 25.
+
+$page is the page number starting with 0; this defaults to 0 (the first page)
+
+$date_since is a date (formatted as YYYY-MM-DD); if this date is included, then only companies
+with updates newer than this date are returned in the result set. If it's not included, then
+all results are returned.
+
+This is helpful for situations where you want to cache the company list on the application side,
+and then get incremental updates each time the application is started.
+
+=item company_details($company_id)
 
 Lookup specific information about the given company id.
+
+$company_id is the 32 byte company id, returned by the company_list or company_search methods.
 
 =back
 
@@ -346,20 +410,44 @@ Lookup specific information about the given company id.
 
 =over
 
-=item C<call_start($company_id, $phone_number)>
+=item call_start($company_id, $phone_number)
 
 Start a "Deep Dial" request to the given company_id and phone_number. This phone_number must pass
-validation through the check_member_number() method.
+validation through the check_member_number method.
 
-=item C<call_cancel($call_id)>
+$company_id is the 32 byte company id returned by the company_* functions above.
 
-Cancel a call that was previously started by the call_start() method. The call_id is the call id
-returned by the call_start() method.
+$phone_number is the phone number to call-back, formatted as XXX-YYY-ZZZZ.
 
-=item C<call_status($call_id)>
+=item call_cancel($call_id)
 
-Return the current call status of the call referenced by the $call_id. The call_id is the call id
-returned by the call_start() method.
+Cancel a call that was previously started by the call_start method. 
+
+$call_id is the call id returned by the call_start method.
+
+=item call_status($call_id)
+
+Return the current call status of the call referenced by the $call_id. 
+
+$call_id is the call id returned by the call_start method.
+
+=back
+
+=head2 DEPRECATED FUNCTIONS
+
+=over
+
+=item search_companies
+
+see company_search above
+
+=item list_companies
+
+see company_list above
+
+=item lookup_company
+
+see company_details above
 
 =back
 

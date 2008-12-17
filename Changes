@@ -1,10 +1,26 @@
 Revision History for Net::fonolo
 --------------------------------
-1.2	- 2008-12-11	(Mike) fixed Makefile.PL to include the LWP::UserAgent and Crypt::SSLeay
-			       modules as dependencies.
 
-1.1	- 2008-12-09	(Mike) added some tests to be more complete; checks that a API server 
-			       version number is retruned from get_version();
-	- 2008-12-09	(Mike) fixed some errors on the man page section
+1.3	
+---
+2008-12-15	- renamed the search_companies method to company_search, and the
+		  list_company method to company_details. (Mike)
+		- added support for the incremental company list using the date_since
+		  field of the company_list() method. (Mike)
+2008-12-14	- added the company_list() method to return a list of all the
+		  companies in the fonolo.com database. (Mike)
 
-1.0	- 2008-12-06	(Mike) initial release
+1.2
+---
+2008-12-11	- fixed Makefile.PL to include the LWP::UserAgent and Crypt::SSLeay
+		  modules as dependencies. (Mike)
+
+1.1	
+---
+2008-12-09	- added some tests to be more complete; checks that a API server 
+		  version number is retruned from get_version() (Mike)
+		- fixed some errors on the man page section (Mike)
+
+1.0
+---
+2008-12-06	- initial release (Mike)
