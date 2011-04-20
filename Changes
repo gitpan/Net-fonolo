@@ -1,6 +1,11 @@
 Revision History for Net::fonolo
 --------------------------------
 
+1.4
+---
+2011-04-19	- fixed a issue with CPAN testers; the version number wasn't coming
+		  through to the test script properly. (Mike)
+
 1.3	
 ---
 2008-12-15	- renamed the search_companies method to company_search, and the

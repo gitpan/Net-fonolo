@@ -1,8 +1,8 @@
 NAME
-       Net::fonolo - Perl interface to fonolo (http://fonolo.com/developer)
+       Net::fonolo - Perl interface to fonolo (http://consumer.fonolo.com)
 
 VERSION
-       This document describes Net::fonolo version 1.3
+       This document describes Net::fonolo version 1.4
 
 SYNOPSIS
        #!/usr/bin/perl

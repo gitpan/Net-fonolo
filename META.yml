@@ -1,23 +1,26 @@
 --- #YAML:1.0
 name:               Net-fonolo
-version:            1.3
-abstract:           Perl interface to fonolo (http://fonolo.com/developer)
+version:            1.4
+abstract:           Perl interface to fonolo (http://consumer.fonolo.com)
 author:
-    - Mike Pultz <mike@fonolo.com>
+    - Mike Pultz <mike@mikepultz.com>
 license:            unknown
 distribution_type:  module
 configure_requires:
     ExtUtils::MakeMaker:  0
+build_requires:
+    ExtUtils::MakeMaker:  0
 requires:
-    Crypt::SSLeay:      0
-    HTTP::Headers:      0
-    JSON::RPC::Client:  0
-    LWP::UserAgent:     0
+    Crypt::SSLeay:        0
+    HTTP::Headers:        0
+    JSON::RPC::Client:    0
+    LWP::Protocol::https:  0
+    LWP::UserAgent:       0
 no_index:
     directory:
         - t
         - inc
-generated_by:       ExtUtils::MakeMaker version 6.48
+generated_by:       ExtUtils::MakeMaker version 6.56
 meta-spec:
     url:      http://module-build.sourceforge.net/META-spec-v1.4.html
     version:  1.4

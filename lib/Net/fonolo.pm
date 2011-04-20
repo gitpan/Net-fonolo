@@ -1,10 +1,15 @@
 #
-# Net::fonolo - PERL OO interface to the fonolo developer API (fonolo.com/developer)
+# Net::fonolo - PERL OO interface to the fonolo developer API (http://consumer.fonolo.com)
 #
-# Written by Mike Pultz (mike@fonolo.com)
+# Copyright (c) 2011, FonCloud, Inc.
+# All rights reserved.
+#
+# This software is licensed under a BSD style license; see COPYING for details.
+#
+# Written by Mike Pultz (mike@mikepultz.com)
 #
 package Net::fonolo;
-$VERSION = "1.3";
+$VERSION = "1.4";
 
 use warnings;
 use strict;
@@ -125,6 +130,7 @@ sub _send_request
 	# execute the request
 	#
 	my $res = $_self->{client}->call($_self->{rpcurl}, $_obj);
+
 	if (defined($res->{content}->{result}))
 	{
 		return $res->{content}->{result};
@@ -153,6 +159,19 @@ sub search_companies
 #
 # API functions
 #
+sub get_error
+{
+        my ($_self) = @_;
+
+        my $obj = {
+                method => 'garbage'
+        };
+
+        my $res = _send_request($_self, $obj);
+
+        return _send_request($_self, $obj);
+}
+
 sub get_version
 {
 	my ($_self) = @_;
@@ -161,7 +180,18 @@ sub get_version
 		method => 'system.describe'
 	};
 
+	if (!defined($_self->{key}))
+	{
+		$_self->{key} = '000000000000000000000000000000';
+	}
+
 	my $res = _send_request($_self, $obj);
+
+	if ($_self->{key} eq '000000000000000000000000000000')
+	{
+		delete($_self->{key});
+	}
+
 	if (defined($res->{version}))
 	{
 		return $res->{version};
@@ -264,11 +294,11 @@ __END__
 
 =head1 NAME
 
-Net::fonolo - Perl interface to fonolo (http://fonolo.com/developer)
+Net::fonolo - Perl interface to fonolo (http://consumer.fonolo.com)
 
 =head1 VERSION
 
-This document describes Net::fonolo version 1.3
+This document describes Net::fonolo version 1.4
 
 =head1 SYNOPSIS
 
@@ -461,7 +491,7 @@ L<http://rt.cpan.org>.
 
 =head1 AUTHOR
 
-Mike Pultz <mike@fonolo.com>
+Mike Pultz <mike@mikepultz.com>
 
 =head1 DISCLAIMER OF WARRANTY
 
